@@ -1,0 +1,40 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: nginx-no-autosync-demo
+  labels:
+    type: app-of-apps-child
+    team: demos
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: argo
+  source:
+    repoURL: oci://registry-1.docker.io/bitnamicharts
+    targetRevision: 1.24.0
+    chart: nginx
+    helm:
+      releaseName: nginx-no-autosync-demo  # We can override the release name (if empty used Application Name)
+      values: |
+        service:
+          type: ClusterIP
+          sessionAffinity: None
+      version: v3
+
+  destination:
+    name: akeyless # Cluster name
+    namespace: argocd-demo
+
+  syncPolicy:
+    syncOptions:
+    - CreateNamespace=true
+    - PrunePropagationPolicy=foreground
+    - PruneLast=true
+    retry:
+      limit: 5
+      backoff:
+        duration: 5s
+        factor: 2
+        maxDuration: 3m
