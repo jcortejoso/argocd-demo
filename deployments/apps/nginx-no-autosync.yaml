@@ -19,7 +19,7 @@ spec:
       releaseName: nginx-no-autosync-demo  # We can override the release name (if empty used Application Name)
       values: |
         service:
-          type: ClusterIP
+          type: LoadBalancer
           sessionAffinity: None
       version: v3
 
