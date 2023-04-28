@@ -12,9 +12,9 @@ metadata:
 spec:
   project: argo
   source:
-    repoURL: oci://registry-1.docker.io/bitnamicharts
+    chart: bitnamicharts/nginx
+    repoURL: oci://registry-1.docker.io/
     targetRevision: 1.24.0
-    chart: nginx
     helm:
       releaseName: nginx-no-autosync-demo  # We can override the release name (if empty used Application Name)
       values: |
